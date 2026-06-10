@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Academic Homepage</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <title>Tom Yates</title>
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #222222;
-            --link-color: #0066cc;
-            --accent-color: #f4f4f4;
+            --bg-color: #000000;
+            --text-color: #dddddd;
+            --link-color: #4da6ff;
+            --accent-color: #1a1a1a;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -34,50 +35,288 @@
             background: #ccc;
         }
         .bio-text h1 { margin: 0 0 0.5rem 0; font-size: 2.2rem; }
-        .bio-text p { margin: 0 0 1rem 0; color: #555; }
-        .links a { margin-right: 1rem; text-decoration: none; color: var(--link-color); font-weight: bold; }
-        .links a:hover { text-decoration: underline; }
+        .bio-text p { margin: 0 0 1rem 0; color: #aaaaaa; }
+        .links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .links a {
+            text-decoration: none;
+            color: #fff;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .links a:hover { background: #3a3a3a; border-color: #666; }
         section { margin-bottom: 2.5rem; }
-        h2 { border-bottom: 1px solid #eee; padding-bottom: 0.3rem; color: #111; }
+        h2 { border-bottom: 1px solid #333; padding-bottom: 0.3rem; color: #dddddd; }
         .pub-item { background: var(--accent-color); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; }
         .pub-title { font-weight: bold; display: block; }
-        .pub-authors { font-size: 0.95rem; color: #444; }
-        .pub-venue { font-style: italic; font-size: 0.95rem; color: #666; }
-        .pub-links { margin-top: 0.5rem; font-size: 0.9rem; }
-        .pub-links a { margin-right: 0.8rem; text-decoration: none; color: var(--link-color); }
+        .pub-authors { font-size: 0.95rem; color: #aaaaaa; }
+        .pub-venue { font-style: italic; font-size: 0.95rem; color: #888; }
+        .pub-links { margin-top: 0.5rem; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .pub-links a {
+            text-decoration: none;
+            color: #fff;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .pub-links a:hover { background: #3a3a3a; border-color: #666; }
+        .pub-authors a { color: #aaaaaa; text-decoration: none; }
+        .pub-authors a:hover { text-decoration: underline; }
+        .pub-title a { color: var(--text-color); text-decoration: none; }
+        .pub-title a:hover { text-decoration: underline; }
+        .pub-item-inner { display: flex; gap: 1rem; align-items: flex-start; }
+        .pub-thumbnail { width: 110px; flex-shrink: 0; border-radius: 4px; object-fit: cover; }
+        .pub-content { flex: 1; }
+
+        .about-inner { display: flex; gap: 2rem; align-items: flex-start; }
+        .timeline { display: flex; flex-direction: column; gap: 0; flex-shrink: 0; width: 210px; position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 34px;
+            top: 35px;
+            bottom: 35px;
+            width: 2px;
+            background: #333;
+        }
+        .timeline-item { display: flex; gap: 0.85rem; align-items: flex-start; padding-bottom: 1.25rem; position: relative; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            object-fit: contain;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+        .timeline-item.current .timeline-logo { outline: 2px solid var(--link-color); }
+        .timeline-label { font-size: 0.85rem; line-height: 1.4; padding-top: 4px; }
+        .timeline-label strong { display: block; color: var(--text-color); font-size: 0.9rem; }
+        .timeline-label span { color: #888; }
+        .about-prose { flex: 1; font-size: 0.95rem; line-height: 1.7; color: #aaaaaa; }
+        .about-prose p { margin: 0 0 1rem 0; }
+        .about-prose p:last-child { margin: 0; }
+
+        .hijinks-grid { display: flex; gap: 1rem; }
+        .hijinks-block {
+            flex: 1;
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .hijinks-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            width: 100%;
+            height: 100%;
+        }
+        .hijinks-photos img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .hijinks-label {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            padding: 0.6rem 0.8rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="profile-pic" style="display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #666;">[Headshot Here]</div>
+        <img class="profile-pic" src="images/headshot.jpg" alt="Profile photo">
         <div class="bio-text">
-            <h1>Your Name</h1>
-            <p>PhD Student in Computer Science / Robotics at Your Institution</p>
+            <h1>Tom Yates</h1>
+            <p>PhD studying Computer Vision & Robotics at Imperial</p>
             <div class="links">
-                <a href="mailto:your.email@institution.ac.uk">Email</a>
-                <a href="https://scholar.google.com">Google Scholar</a>
+                <a href="mailto:t.yates25@imperial.ac.uk">Email</a>
+                <a href="https://scholar.google.com/citations?user=ocV7B2wAAAAJ&hl=en">Google Scholar</a>
                 <a href="https://github.com/tyates97">GitHub</a>
             </div>
         </div>
     </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Write a concise, high-impact summary of your research here. Focus on your core mathematical or engineering frameworks, what specific problems you are trying to solve, and the real-world applications (like low-power distributed systems or decentralized inference) you target.</p>
+    <section id="Intro">
+        <p> I'm a PhD student in Andrew Davison's group at Imperial, working on inference in distributed systems. 
+            My research focuses on scalable, decentralised algorithms for inference and learning, with applications in
+            emerging compute architectures and multi-agent systems. <br>
+            
+            If you're interested in probabilistic inference, distributed intelligence, information theory, compression or quantisation, 
+            lets jam.
+        </p>
     </section>
 
-    <section id="publications">
-        <h2>Publications / Preprints</h2>
+    <section id="research">
+        <h2>Research</h2>
         
         <div class="pub-item">
-            <span class="pub-title">A Sample Paper Title Highlighting Your Research Insights</span>
-            <span class="pub-authors"><strong>Your Name</strong>, Co-author One, Co-author Two</span><br>
-            <span class="pub-venue">International Conference on Machine Learning (ICML), 2026</span>
-            <div class="pub-links">
-                <a href="#">[PDF]</a>
-                <a href="#">[Code]</a>
-                <a href="#">[Project Page]</a>
+            <div class="pub-item-inner">
+                <img class="pub-thumbnail" src="images/publication_thumbnails/mystery_box.jpg" alt="Paper thumbnail">
+                <div class="pub-content">
+                    <span class="pub-title">
+                        Up Next
+                    </span>
+                    <span class="pub-authors">
+                        Something quantised this way comes
+                    </span><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pub-item">
+            <div class="pub-item-inner">
+                <a href="https://tyates97.github.io/gbp_clt/"><img class="pub-thumbnail" src="images/publication_thumbnails/gbp_clt.png" alt="Paper thumbnail"></a>
+                <div class="pub-content">
+                    <span class="pub-title">
+                        <a href="https://tyates97.github.io/gbp_clt/">Belief Propagation Converges to Gaussian Distributions in Sparsely-Connected Factor Graphs</a>
+                    </span>
+                    <span class="pub-authors">
+                        <strong>Tom Yates</strong>,
+                        <a href="https://scholar.google.com/citations?user=NHGDWxUAAAAJ&hl=zh-TW">Yuzhou Cheng</a>,
+                        <a href="https://ialzugaray.github.io/">Ignacio Alzugaray</a>,
+                        <a href="https://scholar.google.com/citations?user=eQuCV80AAAAJ&hl=en">Danyal Akarca</a>,
+                        <a href="https://pmediano.gitlab.io/">Pedro A.M. Mediano</a>,
+                        <a href="https://www.doc.ic.ac.uk/~ajd/">Andrew J. Davison</a>
+                    </span><br>
+                    <span class="pub-venue">International Conference on Machine Learning (ICML), 2026</span>
+                    <div class="pub-links">
+                        <a href="https://tyates97.github.io/gbp_clt/paper.pdf">PDF</a>
+                        <a href="https://tyates97.github.io/gbp_clt/">Project Page</a>
+                        <span style="color: #888; cursor: default;">Code (coming soon)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pub-item">
+            <div class="pub-item-inner">
+                <a href="https://eng.ox.ac.uk/media/5567/2019taros_geisert.pdf"><img class="pub-thumbnail" src="images/publication_thumbnails/reachability.png" alt="Paper thumbnail"></a>
+                <div class="pub-content">
+                    <span class="pub-title">
+                        <a href="https://eng.ox.ac.uk/media/5567/2019taros_geisert.pdf">Contact planning for the anymal quadruped robot using an acyclic reachability-based planner</a>
+                    </span>
+                    <span class="pub-authors">
+                        Mathieu Geisert,
+                        <strong>Tom Yates</strong>,
+                        Asil Orgen,
+                        Pierre Fernbach,
+                        Ioannis Havoutis
+                    </span><br>
+                    <span class="pub-venue">Annual Conference Towards Autonomous Robotic Systems (TAROS), 2019</span><br>
+                    <span style="color: #e63946; font-size: 0.95rem;"> Frontiers in Robotics &amp; AI Best Paper Award </span>
+                    <div class="pub-links">
+                        <a href="https://eng.ox.ac.uk/media/5567/2019taros_geisert.pdf">PDF</a>
+                        <a href="https://www.youtube.com/watch?v=X78Y9oZvGHY">Video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="about-inner">
+            <div class="timeline">
+                <div class="timeline-item current">
+                    <img class="timeline-logo" src="images/career_logos/imperial.png" alt="Imperial College London">
+                    <div class="timeline-label">
+                        <strong>PhD</strong>
+                        <span>Imperial College London<br>2025 – Present</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img class="timeline-logo" src="images/career_logos/aria.jpg" alt="ARIA">
+                    <div class="timeline-label">
+                        <strong>Programme Specialist</strong>
+                        <span>ARIA<br>2024 – 2025</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img class="timeline-logo" src="images/career_logos/anduril.png" alt="Anduril Industries">
+                    <div class="timeline-label">
+                        <strong>Mission Operations Manager</strong>
+                        <span>Anduril Industries<br>2023 – 2024</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img class="timeline-logo" src="images/career_logos/newton.webp" alt="Newton European">
+                    <div class="timeline-label">
+                        <strong>Digital Consultant</strong>
+                        <span>Newton Europe<br>2020 – 2023</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img class="timeline-logo" src="images/career_logos/oxford.png" alt="University of Oxford">
+                    <div class="timeline-label">
+                        <strong>Engineering Science</strong>
+                        <span>University of Oxford<br>2015 – 2019</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-prose">
+                <br>
+                <p> Fresh out of undergrad, I faced a dilemma: a PhD, or a corporate job offer. 
+                    I confidently embarked on 3 years of management consultancy and have been doing my penance ever since. 
+                    I was briefly a member of Anduril's UK team, and spent a year at ARIA working on Jacques Carolan's 
+                    <a href="https://aria.org.uk/opportunity-spaces/scalable-neural-interfaces/precision-neurotechnologies" target="_blank" style="color: #aaaaaa; text-decoration: underline;">neurotechnology programme</a>,
+                    before finally realising that you can't do science if you're not a scientist.
+                </p>
+                <br>
+                <p> Since then, I've been studying for a PhD with Prof Andrew Davison. 
+                    My research is is focused on probabilistic inference in distributed systems, particularly using Gaussian Belief Propagation to make globally optimal decisions 
+                    with only local knowledge. I want to make that process as efficient as possible.
+                </p>
+                <br>
+                <p> Links I like:</p>
+                <ul>
+                    <li><a href="https://gaussianbp.github.io/" target="_blank" style="color: #aaaaaa; text-decoration: underline;">A Visual Introduction to Gaussian Belief Propagation</a></li>
+                    <li><a href="https://distill.pub/2020/selforg/mnist/" target="_blank" style="color: #aaaaaa; text-decoration: underline;">Self-classifying MNIST Digits</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="hijinks">
+        <h2>Hijinks</h2>
+        <p>I have a habit of participating in endurance events, but I've managed to stay clean since May 2025. A couple of highlights:</p>
+        <div class="hijinks-grid">
+            <div class="hijinks-block">
+                <div class="hijinks-photos">
+                    <img src="images/hijinks/MDS/start.JPG" alt="MDS start">
+                    <img src="images/hijinks/MDS/running.JPG" alt="MDS running">
+                    <img src="images/hijinks/MDS/walking.JPG" alt="MDS walking">
+                    <img src="images/hijinks/MDS/finish.JPG" alt="MDS finish">
+                </div>
+                <div class="hijinks-label">Marathon Des Sables 2025</div>
+            </div>
+            <div class="hijinks-block">
+                <div class="hijinks-photos">
+                    <img src="images/hijinks/TransAt/start.jpeg" alt="TransAt start">
+                    <img src="images/hijinks/TransAt/helming.png" alt="TransAt helming">
+                    <img src="images/hijinks/TransAt/midway.png" alt="TransAt midway">
+                    <img src="images/hijinks/TransAt/thinking.png" alt="TransAt thinking">
+                </div>
+                <div class="hijinks-label">RORC Transatlantic 2023</div>
             </div>
         </div>
     </section>
